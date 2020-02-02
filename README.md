@@ -1,7 +1,7 @@
 # NGS1 Project Pipline:
 
 ## 1- Getting a sample data from NCBI, we got ours from these links:
-**It's a paired end read**
+*It's a paired end read*
 
 ⋅⋅* [Read1.] (ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR830/SRR830985/SRR830985_1.fastq.gz)
 
