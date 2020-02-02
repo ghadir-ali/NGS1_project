@@ -3,9 +3,9 @@
 ## 1. Getting a sample data from NCBI, we got ours from these links:
   *It's a paired end read*
 
-  * [Read1.](ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR830/SRR830985/SRR830985_1.fastq.gz)
+  * [Read1](ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR830/SRR830985/SRR830985_1.fastq.gz)
 
-  * [Read2.](ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR830/SRR830985/SRR830985_2.fastq.gz)
+  * [Read2](ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR830/SRR830985/SRR830985_2.fastq.gz)
 
 And the refernce would be the **[human genome](ncbi.nlm.nih.gov/refseq/H_sapiens/annotation/GRCh38_latest/refseq_identifiers/GRCh38_latest_rna.fna.gz)**
 
