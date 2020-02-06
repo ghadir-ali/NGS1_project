@@ -9,7 +9,7 @@
 
 **This was done using the following commands:**
 
-   ### 1. Making a new work diroctory:
+   ####### 1. Making a new work diroctory:
 ```bash
 mkdir ~/workdir/fqData2 && cd ~/workdir/fqData2
 ```
@@ -38,3 +38,12 @@ sed -n '1,20000000p' SRR830985_2.fastq > SRR830985_subset2.fastq
 wc -l SRR830985_subset2.fastq
 less SRR830985_subset2.fastq
 ```
+
+   ### 4. Alignment:
+*We want 5 million reads, and each read corrosponds to 4 lines in fastq files. Therefore, we need to extract 20 million lines to have 5 million reads
+Also, the two files should have the same length*
+```bash
+wc -l SRR830985_1.fastq
+wc -l SRR830985_2.fastq
+```
+
