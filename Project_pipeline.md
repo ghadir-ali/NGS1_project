@@ -125,10 +125,13 @@ samtools view -F 0x0080 SRR_secondry.sam | awk '{print $1, $10}' | sort | uniq  
 ```
 The output file consists of two columns as follows:
 
+
 Queryname  |  Actual sequence
 ------------------------------
 980027648  | GTCATGGCAAT
            |
+           
+           
 -> The above is just an example for illustration.           
 ###### 2. To count the G/C characters:
 First we extract the pure sequence and discard the Queryname:
