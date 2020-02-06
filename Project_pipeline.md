@@ -128,8 +128,8 @@ The output file consists of two columns as follows:
 
 Queryname  |  Actual sequence
 ------------------------------
-980027648  | GTCATGGCAAT
-           |
+980027648    GTCATGGCAAT
+
            
            
 -> The above is just an example for illustration.           
