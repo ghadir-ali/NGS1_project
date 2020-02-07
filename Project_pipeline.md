@@ -1,10 +1,11 @@
 # NGS1 Project Pipline:
 
 ## 1. Getting a sample data from NCBI, we got ours from these links:
-  *It's a paired end read*
+  *It's a paired end rna sequencing read of ahuman heart failure patient*
 
    [Read1](ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR830/SRR830985/SRR830985_1.fastq.gz), [Read2](ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR830/SRR830985/SRR830985_2.fastq.gz)
-
+   
+  
    And the refernce would be the **[human transcriptome](ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_33/gencode.v33.transcripts.fa.gz)**
 
 **This was done using the following commands:**
@@ -47,6 +48,57 @@ wc -l SRR830985_2.fastq
 
 ## 2. Alignment:
 
+ Regarding the decision to choose an optimum reference and subsequently an optimum aligner, first we thought to use whole genome reference and we downloaded it, then we gunzipped the file 
+   cd ~/workdir/sample_data
+   wget ftp://ftp.ncbi.nlm.nih.gov/refseq/H_sapiens/annotation/GRCh38_latest/refseq_identifiers/GRCh38_latest_genomic.fna.gz
+   gunzip GRCh38_latest_genomic.fna.gz
+   then we downloaded and gunzipped the whole human genome annotation file through the following command
+   wget ftp://ftp.ensembl.org/pub/release-91/gtf/homo_sapiens/Homo_sapiens.GRCh38.91.gtf.gz
+   gunzip Homo_sapiens.GRCh38.91.gtf.gz
+   
+   and tried to index the file by hisat2 aligner through the following command
+   mkdir -p ~/workdir/hisat_align/hisatIndex && cd ~/workdir/hisat_align/hisatIndex
+ln -s ~/workdir/sample_data/GRCh38_latest_genomic.fna .
+hisat2_extract_splice_sites.py ~/workdir/sample_data/Homo_sapiens.GRCh38.91.gtf > splicesites.tsv
+hisat2_extract_exons.py ~/workdir/sample_data/Homo_sapiens.GRCh38.91.gtf > exons.tsv
+hisat2-build -p 1 --ss splicesites.tsv --exon exons.tsv GRCh38_latest_genomic.fna GRCh38_latest_genomic
+
+Unfortunately, the hisat2 took about 11 hours to weite only 2 buckets of 7 buckets of the index, then we realized that we were wasting our time indexing the whole genome.
+
+Then we thought to use a whole ranscriptome reference file, which was about one tenth the the whole genome reference file size. We thought to use the BWA aligner, a splice non-aware aligner, which should be suitable for the alignment of the paired end rna sequencing file. We used the following commands tto download the reference whole transcriptome, index the reference and align the rna sequencing file to the indexed reference.
+cd ~/workdir/sample_data
+wget ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_33/gencode.v33.transcripts.fa.gz
+gunzip gencode.v33.transcripts.fa.gz
+mkdir -p ~/workdir/bwa_align/bwaIndex && cd ~/workdir/bwa_align/bwaIndex
+ln -s ~/workdir/sample_data/gencode.v33.transcripts.fa .
+bwa index -a bwtsw gencode.v33.transcripts.fa
+cd ~/workdir/bwa_align
+R1="$HOME/workdir/sample_data/SRR830985_subset1.fastq"
+R2="$HOME/workdir/sample_data/SRR830985_subset2.fastq"
+/usr/bin/time -v bwa mem bwaIndex/gencode.v33.transcripts.fa $R1 $R2 > SRR.sam
+Unfortunately, the alignment process produced an empty sam file in no time.
+After the last step, there was no space on the device and we took a very long time to resize the virtual machine.
+
+Then we tried two methods:
+The first method, we used the chromosome 22 human genome reference and its annotation file which we previously used in the ngs1 course using hisat2 aligner by the following commands:
+cd ~/workdir/sample_data
+wget http://genomedata.org/rnaseq-tutorial/fasta/GRCh38/chr22_with_ERCC92.fa
+wget http://genomedata.org/rnaseq-tutorial/annotations/GRCh38/chr22_with_ERCC92.gtf
+mkdir -p ~/workdir/hisat_align/hisatIndex && cd ~/workdir/hisat_align/hisatIndex
+ln -s ~/workdir/sample_data/chr22_with_ERCC92.fa .
+hisat2_extract_splice_sites.py ~/workdir/sample_data/chr22_with_ERCC92.gtf > splicesites.tsv
+hisat2_extract_exons.py ~/workdir/sample_data/chr22_with_ERCC92.gtf > exons.tsv
+hisat2-build -p 1 --ss splicesites.tsv --exon exons.tsv chr22_with_ERCC92.fa chr22_with_ERCC92
+cd ~/workdir/hisat_align
+R1="$HOME/workdir/sample_data/SRR830985_subset1.fastq"
+R2="$HOME/workdir/sample_data/SRR830985_subset2.fastq"
+hisat2 -p 1 -x hisatIndex/chr22_with_ERCC92 --dta --rna-strandness RF -1 $R1 -2 $R2 -S  SRR1.sam
+
+ Then we thought to use whole transcriptome reference and hisat2 aligner in order to obtain as long mapping sam file as possible in order to be able to extract a significant number of secondary alignments to complete our project.
+
+   And the refernce would be the **[human transcriptome](ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_33/gencode.v33.transcripts.fa.gz)**
+
+
  ###### 1. Downloading the reference (human trnscriptome) and renaming it:
  ```bash
 cd ~/workdir/sample_data
@@ -70,6 +122,8 @@ hisat2 -p 1 -x hisatIndex/transcriptome --dta --rna-strandness RF -1 $R1 -2 $R2 
 ## 3. Extracting the secondry alignments (and the primary for comparison):
 
  ###### 1. Secondary alignment:
+ First we used the command: samtools view -f 0x100 SRR.sam > SRR_secondry.sam 
+ However, the resultig sam file could not be processed as the file was lacking the header at the first line.
  ```bash
 samtools view -H -f 0x100 SRR.sam > SRR_secondry.sam && samtools view -f 0x100 SRR.sam >> SRR_secondry.sam 
  ```
@@ -96,7 +150,7 @@ less primary_reads_count.txt
  ```bash
 less secondry_reads_count.txt
 ```
-**We notice that all reads exist only once!
+**We noticed that all reads exist only once!
 To double check for the whole file, we ran the following commands:**
 ```bash
 File=$"primary_reads_count.txt"
