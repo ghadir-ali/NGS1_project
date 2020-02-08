@@ -262,4 +262,9 @@ samtools view SRR_primary.sam | perl -lane '@quals = split(undef, $F[10]); forea
 #Output: Mean BASEQUAL = 36.1437
  ```
  
-  
+## 5. Commands to turn sam to bam to reduce space to try to upload it to the model:
+```bash
+samtools view -S -b SRR.sam  > SRR.bam
+samtools view -S -b SRR_primary.sam  > SRR_primary.bam
+samtools view -S -b SRR_secondry.sam  > SRR_secondry.bam
+```
