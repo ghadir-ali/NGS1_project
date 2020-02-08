@@ -207,7 +207,7 @@ awk -v gc=$GC -v t=$total 'BEGIN { print "Avg GC content is ", gc*100/t, "%"}'
 ###### 4. Direct calculation using awk for comparison if the repetition had a significant effect:
 ```bash
 awk '{ n=length($10); print $10, gsub(/[GCCgcs]/,"",$10)/n;}' SRR_secondry.sam > 2nd_GC_counts
-cat 2nd_GC_counts | awk '{sum+=$2} END { print "Mean GC content =",sum*100/NR}," %"'
+cat 2nd_GC_counts | awk '{sum+=$2} END { print "Mean GC content =",sum*100/NR," %"}'
 # Output : Mean GC content = 49.9088 %
 ```
 ** We notice there is a difference, so repetition elimination wa an inportant step**
@@ -226,6 +226,12 @@ read lines filename <<< $(wc -l SRR_primary.sam)
 total=$(($lines*101))
 awk -v gc=$GC -v t=$total 'BEGIN { print "Avg GC content is ", gc*100/t, "%"}'
 # Avg GC content is  47.8822 %
+```
+###### 6. Calculating the avg GC content with the generic way for primary: 
+```bash
+awk '{ n=length($10); print $10, gsub(/[GCCgcs]/,"",$10)/n;}' SRR_primary.sam > 1st_GC_counts
+cat 1st_GC_counts | awk '{sum+=$2} END { print "Mean GC content =",sum*100/NR," %"}'
+# Mean GC content = 47.8822 %
 ```
 
 
