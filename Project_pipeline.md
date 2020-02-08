@@ -201,8 +201,8 @@ GC=$(($G+$C))
 ```bash
 read lines filename <<< $(wc -l secondry_uniq.sam)
 total=$(($lines*101))
-GC=$(($GC*100))
-echo "GC Content is $(($GC/$total))%" # GC Content is 50%
+awk -v gc=$GC -v t=$total 'BEGIN { print "Avg GC content is ", gc*100/t, "%"}'
+# Avg GC content is  50.6739 %
 ```
 ###### 4. Repeat for primary, but with no need for eliminating repetitions:
 ```bash
@@ -215,8 +215,8 @@ GC=$(($G+$C))
 #To get avg GC content:
 read lines filename <<< $(wc -l SRR_primary.sam)
 total=$(($lines*101))
-GC=$(($GC*100))
-echo "GC Content is $(($GC/$total))%" # GC Content is 47%
+awk -v gc=$GC -v t=$total 'BEGIN { print "Avg GC content is ", gc*100/t, "%"}'
+# Avg GC content is  47.8822 %
 ```
 ## 4. Getting the average mapping quality score:
 
