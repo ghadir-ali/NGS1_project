@@ -18,9 +18,9 @@ mkdir ~/workdir/fqData2 && cd ~/workdir/fqData2
    ###### 2. Downloading the files & unzipping:
 ```bash
 wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR830/SRR830985/SRR830985_1.fastq.gz
-gunzip SRR830985_1.fastq
+gunzip SRR830985_1.fastq.gz
 wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR830/SRR830985/SRR830985_1.fastq.gz
-gunzip SRR830985_2.fastq
+gunzip SRR830985_2.fastq.gz
 
 ```
    ###### 3. Checking that the files contains enough reads & subsetting:
