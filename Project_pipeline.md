@@ -48,24 +48,28 @@ wc -l SRR830985_2.fastq
 
 ## 2. Alignment:
 
- Regarding the decision to choose an optimum reference and subsequently an optimum aligner, first we thought to use whole genome reference and we downloaded it, then we gunzipped the file 
+ Regarding the decision to choose an optimum reference and subsequently an optimum aligner, first we thought to use whole genome reference and we downloaded it, then we gunzipped the file:
+ ```bash
    cd ~/workdir/sample_data
    wget ftp://ftp.ncbi.nlm.nih.gov/refseq/H_sapiens/annotation/GRCh38_latest/refseq_identifiers/GRCh38_latest_genomic.fna.gz
    gunzip GRCh38_latest_genomic.fna.gz
    then we downloaded and gunzipped the whole human genome annotation file through the following command
    wget ftp://ftp.ensembl.org/pub/release-91/gtf/homo_sapiens/Homo_sapiens.GRCh38.91.gtf.gz
    gunzip Homo_sapiens.GRCh38.91.gtf.gz
-   
-   and tried to index the file by hisat2 aligner through the following command
+```   
+and tried to index the file by hisat2 aligner through the following commands:
+```bash
    mkdir -p ~/workdir/hisat_align/hisatIndex && cd ~/workdir/hisat_align/hisatIndex
 ln -s ~/workdir/sample_data/GRCh38_latest_genomic.fna .
 hisat2_extract_splice_sites.py ~/workdir/sample_data/Homo_sapiens.GRCh38.91.gtf > splicesites.tsv
 hisat2_extract_exons.py ~/workdir/sample_data/Homo_sapiens.GRCh38.91.gtf > exons.tsv
 hisat2-build -p 1 --ss splicesites.tsv --exon exons.tsv GRCh38_latest_genomic.fna GRCh38_latest_genomic
+```
 
-Unfortunately, the hisat2 took about 11 hours to weite only 2 buckets of 7 buckets of the index, then we realized that we were wasting our time indexing the whole genome.
+Unfortunately, the hisat2 took about 11 hours to write only 2 buckets of 7 buckets of the index, then we realized that we were wasting our time indexing the whole genome.
 
-Then we thought to use a whole ranscriptome reference file, which was about one tenth the the whole genome reference file size. We thought to use the BWA aligner, a splice non-aware aligner, which should be suitable for the alignment of the paired end rna sequencing file. We used the following commands tto download the reference whole transcriptome, index the reference and align the rna sequencing file to the indexed reference.
+Then we thought to use a whole ranscriptome reference file, which was about one tenth the the whole genome reference file size. We thought to use the BWA aligner, a splice non-aware aligner, which should be suitable for the alignment of the paired end rna sequencing file. We used the following commands tto download the reference whole transcriptome, index the reference and align the rna sequencing file to the indexed reference:
+```bash
 cd ~/workdir/sample_data
 wget ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_33/gencode.v33.transcripts.fa.gz
 gunzip gencode.v33.transcripts.fa.gz
@@ -76,11 +80,13 @@ cd ~/workdir/bwa_align
 R1="$HOME/workdir/sample_data/SRR830985_subset1.fastq"
 R2="$HOME/workdir/sample_data/SRR830985_subset2.fastq"
 /usr/bin/time -v bwa mem bwaIndex/gencode.v33.transcripts.fa $R1 $R2 > SRR.sam
+```
 Unfortunately, the alignment process produced an empty sam file in no time.
 After the last step, there was no space on the device and we took a very long time to resize the virtual machine.
 
 Then we tried two methods:
 The first method, we used the chromosome 22 human genome reference and its annotation file which we previously used in the ngs1 course using hisat2 aligner by the following commands:
+```bash
 cd ~/workdir/sample_data
 wget http://genomedata.org/rnaseq-tutorial/fasta/GRCh38/chr22_with_ERCC92.fa
 wget http://genomedata.org/rnaseq-tutorial/annotations/GRCh38/chr22_with_ERCC92.gtf
@@ -93,6 +99,7 @@ cd ~/workdir/hisat_align
 R1="$HOME/workdir/sample_data/SRR830985_subset1.fastq"
 R2="$HOME/workdir/sample_data/SRR830985_subset2.fastq"
 hisat2 -p 1 -x hisatIndex/chr22_with_ERCC92 --dta --rna-strandness RF -1 $R1 -2 $R2 -S  SRR1.sam
+```
 
  Then we thought to use whole transcriptome reference and hisat2 aligner in order to obtain as long mapping sam file as possible in order to be able to extract a significant number of secondary alignments to complete our project.
 
