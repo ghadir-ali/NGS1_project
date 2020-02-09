@@ -53,7 +53,9 @@ wc -l SRR830985_2.fastq
    cd ~/workdir/sample_data
    wget ftp://ftp.ncbi.nlm.nih.gov/refseq/H_sapiens/annotation/GRCh38_latest/refseq_identifiers/GRCh38_latest_genomic.fna.gz
    gunzip GRCh38_latest_genomic.fna.gz
-   then we downloaded and gunzipped the whole human genome annotation file through the following command
+ ```
+   then we downloaded and gunzipped the whole human genome annotation file through the following command:
+ ```bash
    wget ftp://ftp.ensembl.org/pub/release-91/gtf/homo_sapiens/Homo_sapiens.GRCh38.91.gtf.gz
    gunzip Homo_sapiens.GRCh38.91.gtf.gz
 ```   
@@ -138,6 +140,8 @@ samtools view -H -f 0x100 SRR.sam > SRR_secondry.sam && samtools view -f 0x100 S
  ```bash
 samtools view -H -F 0x100 SRR.sam > SRR_primary.sam && samtools view -F 0x100 SRR.sam >> SRR_primary.sam 
  ```
+ **- Please note we had to add the -H first and then add to the file the alignment section becuase we ran into errors due to this issue (having a truncated sam file with no header) during the assembly and other steps and trials.**
+ 
 ## 3. Getting the average GC content:
 Before we calculate the GC content, we suspected that some reads might be repeated in the secondary alignment:
 **By definition, a secondary alignment means the read was mapped to multiple places, so there might be unbalanced repetitions that could throw of our calculations.**
