@@ -52,7 +52,7 @@ pypy3 get-pip.py
 The resulting files are uploaded on the repo in the assembly results folder, and below is the table from the stats file:
 _____________________________________________________________________________________________________________________
 |      Levels      | Sensitivity | Precision  |
------------------------------------------------
+|------------------|-------------|------------|
 |        Base level|    20.9     |    24.0    |
 |        Exon level|    10.7     |    14.3    |
 |      Intron level|     3.7     |    35.0    |
