@@ -17,5 +17,5 @@ At first we working in parallel and comparing the results which differed slightl
 
 VM | Ubuntu 18.04
 -------------------
-93% |  87% 
+#### 93% |  87% 
 
