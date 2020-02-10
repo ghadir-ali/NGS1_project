@@ -15,7 +15,7 @@ ls -tral
 Of course, we had to install the software needed and handle dependicies ourselves, we used virtual enviroments in both cases.
 At first we working in parallel and comparing the results which differed slightly, for example the overall aligment scores from the hisat:
 
-VM | Ubuntu 18.04
--------------------
-#### 93% |  87% 
+| VM  | Ubuntu 18.04|
+|-----|-------------|
+| 93% |      87%    |
 
