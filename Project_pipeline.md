@@ -1,4 +1,5 @@
 # NGS1 Project Pipline:
+------------------------
 
 ## 1. Getting a sample data from NCBI, we got ours from these links:
   *It's a paired end rna sequencing read of ahuman heart failure patient*
@@ -191,13 +192,14 @@ samtools view -F 0x0080 SRR_secondry.sam | awk '{print $1, $10}' | sort | uniq  
 The output file consists of two columns as follows:
 
 
-Queryname  |  Actual sequence
-------------------------------
-980027648    GTCATGGCAAT
+| Queryname  |  Actual sequence|
+|------------|-----------------|
+| 980027648  |   GTCATGGCAAT   |
 
            
            
--> The above is just an example for illustration.           
+^ The above is just an example for illustration.   
+
 ###### 2. To count the G/C characters:
 First we extract the pure sequence and discard the Queryname:
 ```bash
