@@ -1,0 +1,30 @@
+# gffcompare v0.11.2 | Command line was:
+#gffcompare -r /home/ghadeer/ngs_workdir/hisat_align/primary.gtf /home/ghadeer/ngs_workdir/hisat_align/secondry.gtf
+#
+
+#= Summary for dataset: /home/ghadeer/ngs_workdir/hisat_align/secondry.gtf 
+#     Query mRNAs :    7107 in    7070 loci  (287 multi-exon transcripts)
+#            (19 multi-transcript loci, ~1.0 transcripts per locus)
+# Reference mRNAs :    7023 in    6942 loci  (2527 multi-exon)
+# Super-loci w/ reference transcripts:     1659
+#-----------------| Sensitivity | Precision  |
+        Base level:    20.9     |    24.0    |
+        Exon level:    10.7     |    14.3    |
+      Intron level:     3.7     |    35.0    |
+Intron chain level:     2.9     |    25.4    |
+  Transcript level:    16.8     |    16.6    |
+       Locus level:    17.0     |    16.6    |
+
+     Matching intron chains:      73
+       Matching transcripts:    1179
+              Matching loci:    1177
+
+          Missed exons:    8080/9928	( 81.4%)
+           Novel exons:    5583/7408	( 75.4%)
+        Missed introns:    2796/2911	( 96.0%)
+         Novel introns:     186/311	( 59.8%)
+           Missed loci:    5280/6942	( 76.1%)
+            Novel loci:    5391/7070	( 76.3%)
+
+ Total union super-loci across all input datasets: 7050 
+7107 out of 7107 consensus transcripts written in gffcmp.annotated.gtf (0 discarded as redundant)
