@@ -32,6 +32,7 @@ cat secondry.gtf | grep -v "^@" | awk '$3=="transcript"' | wc -l # Output: 7107
 | primary.gtf | secondry.gtf |
 |-------------|--------------|
 |    7274     |     7107     |
+
 **Interpretation:**
 It makes sense that the secondry would have less transcripts because not all reads get a secondry mapping position, this also indicates that assembler did in-fact account for repititions, because otherwise the secondry would have had a higher count.
 
