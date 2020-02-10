@@ -153,3 +153,48 @@ grep -c 'SRR1175541.1 1_11_1966/1' $norm_R1
 grep -c 'SRR1175541.1 1_11_1966/1' $norm_R2
 # Output: 0
 ```
+We tried to get different normal patients with these links:
+ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR117/003/SRR1175543/SRR1175543_1.fastq.gz & ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR117/003/SRR1175543/SRR1175543_2.fastq.gz
+
+ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR117/004/SRR1175544/SRR1175544_1.fastq.gz & ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR117/004/SRR1175544/SRR1175544_2.fastq.gz
+
+But the same problem occured. After some time we discovered that these files belong to a different trial other than the one where we got our heart failure data, so we got a normal case from the same trial from these links:
+
+ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR830/SRR830965/SRR830965_1.fastq.gz & ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR830/SRR830965/SRR830965_2.fastq.gz
+
+and we ran the following commands:
+```bash
+mkdir -p ~/workdir/diff_exp && cd ~/workdir/diff_exp/
+wget -c https://0x0.st/zK57.gz -O ref.tar.gz
+tar xvzf ref.tar.gz
+wget -c https://raw.githubusercontent.com/mr-eyes/nu-ngs01/master/Day-6/deseq1.r
+wget -c https://raw.githubusercontent.com/mr-eyes/nu-ngs01/master/Day-6/draw-heatmap.r
+conda activate ngs1
+conda install subread
+conda install r
+conda install -y bioconductor-deseq r-gplots
+```
+We got an error on the last command that the package was not found in the registered channels, which we resolved by adding the bioconda channels using the following commands:
+```bash
+conda config --add channels defaults
+conda config --add channels bioconda
+conda config --add channels conda-forge
+```
+Then we ran it again and it successfully installed the last package.
+
+##### After that we proceeded:
+```bash
+GTF=$"~/workdir/diff_exp/ref/ERCC92.gtf"
+#Transforming the sam files to bam:
+samtools view -S -b hfp.sam > hfp.bam
+```
+Unfortunately, we couldn't resume after this point because we had lost a lot of time on downloading multiple large files, but these are the commands we had prepared:
+```bash
+samtools view -S -b norm.sam > norm.bam
+
+# Generate the counts:
+featureCounts -a $GTF -g gene_name -o counts.txt  ~/wrokdir/hisatalign/hfp.bam  ~/wrokdir/hisatalign/norm.bam
+# Simplify the file to keep only the count columns.
+cat counts.txt | cut -f 1,7-12 > simple_counts.txt
+cat simple_counts.txt | Rscript deseq1.r 3x3 > results_deseq1.tsv
+```
