@@ -117,20 +117,38 @@ hisat2 -p 1 -x hisatIndex/transcriptome --dta --rna-strandness RF -1 $hfp_R1 -2 
 It worked with following output:
 _____________________________________________________________________________________________________________________
 13176801 reads; of these:
+
   13176801 (100.00%) were paired; of these:
+  
     2165394 (16.43%) aligned concordantly 0 times
+    
     5430495 (41.21%) aligned concordantly exactly 1 time
+    
     5580912 (42.35%) aligned concordantly >1 times
+    
     ----
     2165394 pairs aligned concordantly 0 times; of these:
       81534 (3.77%) aligned discordantly 1 time
+      
     ----
     2083860 pairs aligned 0 times concordantly or discordantly; of these:
+    
       4167720 mates make up the pairs; of these:
+      
         3457853 (82.97%) aligned 0 times
+        
         397110 (9.53%) aligned exactly 1 time
+        
         312757 (7.50%) aligned >1 times
+        
 __86.88% overall alignment rate__
 _____________________________________________________________________________________________________________________
 
-Which confirmed the possibility that the normal files were corrupted, so redownloaded them and repeated this process, and got the following output:
+Which seemed to confirm the possibility that the normal files were corrupted, so redownloaded them and repeated this process, but the problem presisted!
+We searched more for a solution. Then we suspected that this read might exist in one pair only, causing this problem. We checked with following commands:
+```bash
+grep -c 'SRR1175541.1 1_11_1966/1' $norm_R1
+# Output: 1
+grep -c 'SRR1175541.1 1_11_1966/1' $norm_R2
+# Output: 0
+```
