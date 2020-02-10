@@ -50,7 +50,8 @@ pypy3 get-pip.py
 ```
 
 The resulting files are uploaded on the repo in the assembly results folder, and below is the table from the stats file:
-#-----------------| Sensitivity | Precision  |
+_____________________________________________________________________________________________________________________
+------------------| Sensitivity | Precision  |
         Base level:    20.9     |    24.0    |
         Exon level:    10.7     |    14.3    |
       Intron level:     3.7     |    35.0    |
@@ -71,7 +72,7 @@ Intron chain level:     2.9     |    25.4    |
 
  Total union super-loci across all input datasets: 7050 
 7107 out of 7107 consensus transcripts written in gffcmp.annotated.gtf (0 discarded as redundant)
-
+_____________________________________________________________________________________________________________________
 
 #### 3. Differential Expression:
 We wanted to compare the same pipeline on the whole paired end reads for the heart failure patient (HFP) and the normal case so we got both of the reads of each case:
@@ -101,9 +102,11 @@ ls -tral
   conda activate ngs1
   ```
   Then we tried the same code again, but this tim got this output:
+_____________________________________________________________________________________________________________________
   *Error: Read SRR1175541.1 1_11_1966/1 has more quality values than read characters.
 terminate called after throwing an instance of 'int'
 Aborted*
+_____________________________________________________________________________________________________________________
 
 We searched on biostars and found that most likely this error occurs when the file is corrupted, so we tried the other two reads with the same command:
 ```bash
@@ -112,7 +115,7 @@ hfp_R2=$"hfp_2.fastq"
 hisat2 -p 1 -x hisatIndex/transcriptome --dta --rna-strandness RF -1 $hfp_R1 -2 $hfp_R2 -S hfp.sam
 ```
 It worked with following output:
-*
+_____________________________________________________________________________________________________________________
 13176801 reads; of these:
   13176801 (100.00%) were paired; of these:
     2165394 (16.43%) aligned concordantly 0 times
@@ -128,6 +131,6 @@ It worked with following output:
         397110 (9.53%) aligned exactly 1 time
         312757 (7.50%) aligned >1 times
 __86.88% overall alignment rate__
+_____________________________________________________________________________________________________________________
 
-*
 Which confirmed the possibility that the normal files were corrupted, so redownloaded them and repeated this process, and got the following output:
