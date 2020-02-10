@@ -51,13 +51,14 @@ pypy3 get-pip.py
 
 The resulting files are uploaded on the repo in the assembly results folder, and below is the table from the stats file:
 _____________________________________________________________________________________________________________________
-------------------| Sensitivity | Precision  |
-        Base level|    20.9     |    24.0    |
-        Exon level|    10.7     |    14.3    |
-      Intron level|     3.7     |    35.0    |
-Intron chain level|     2.9     |    25.4    |
-  Transcript level|    16.8     |    16.6    |
-       Locus level|    17.0     |    16.6    |
+|      Levels      | Sensitivity | Precision  |
+-----------------------------------------------
+|        Base level|    20.9     |    24.0    |
+|        Exon level|    10.7     |    14.3    |
+|      Intron level|     3.7     |    35.0    |
+|Intron chain level|     2.9     |    25.4    |
+|  Transcript level|    16.8     |    16.6    |
+|       Locus level|    17.0     |    16.6    |
 
      Matching intron chains:      73
        Matching transcripts:    1179
